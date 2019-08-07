@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: uac.ocp.lab
+  kind: Uac
+  role: /opt/ansible/roles/uac
