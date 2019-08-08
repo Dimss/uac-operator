@@ -10,6 +10,11 @@ ansible = "*"
 ansible-runner = "*"
 openshift = "*"
 ansible-runner-http = "*"
+pyopenssl = "*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+op  = "operator-sdk up local --namespace=uac --watches-file=watches-dev.yaml"
+# pipenv run ansible-playbook uac.yml --extra-vars='{"namespace": "uac"}'

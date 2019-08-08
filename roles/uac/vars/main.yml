@@ -1,2 +1,3 @@
 ---
-# vars file for uac
+certs_dir: /tmp/webhook_certs
+service_name: uac.uac.svc.cluster.local

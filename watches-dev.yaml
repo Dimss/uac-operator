@@ -2,4 +2,4 @@
 - version: v1alpha1
   group: uac.ocp.lab
   kind: Uac
-  playbook: /opt/ansible/roles/uac
+  playbook: /Users/dima/code/uac-operator/uac.yml

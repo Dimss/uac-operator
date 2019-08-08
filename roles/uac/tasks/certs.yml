@@ -1,0 +1,26 @@
+- name: Generate CA, server.crt and server.key
+  script: files/create-certs.sh create {{certs_dir}} {{service_name}}
+
+- name: Get CA
+  script: files/create-certs.sh pca {{certs_dir}}
+  register:  ca_output
+
+- name: Get Server crt
+  script: files/create-certs.sh pscert {{certs_dir}}
+  register:  crt_output
+
+- name: Get Server key
+  script: files/create-certs.sh pskey {{certs_dir}}
+  register:  key_output
+
+- name: Set CA fact
+  set_fact:
+    fact_ca: "{{ ca_output.stdout_lines|first }}"
+
+- name: Set CERT fact
+  set_fact:
+    fact_cert: "{{crt_output.stdout_lines|first}}"
+
+- name: Set KEY fact
+  set_fact:
+    fact_key: "{{key_output.stdout_lines|first}}"
