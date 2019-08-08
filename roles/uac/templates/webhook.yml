@@ -1,0 +1,17 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: "{{webhook_name}}"
+  labels:
+    app: "{{webhook_name}}"
+webhooks:
+  - name: "{{webhook_name}}.{{namespace}}.svc.cluster.local"
+    clientConfig:
+      url: "https://{{webhook_name}}.{{namespace}}.svc.cluster.local:{{service_port}}"
+      caBundle: "{{fact_ca}}"
+    rules:
+      - operations: [ "CREATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["oauthaccesstokens"]
+    failurePolicy: Ignore

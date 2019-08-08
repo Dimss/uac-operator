@@ -1,0 +1,14 @@
+- debug: var=fact_ca
+- debug: var=fact_cert
+- debug: var=fact_key
+
+
+- name: Deploy Deynamic Admission Controller WebHook
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/webhook.yml') }}"
+
+- name: Create Secrets
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/secrets.yml') }}"
