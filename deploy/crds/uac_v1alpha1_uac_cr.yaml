@@ -3,5 +3,11 @@ kind: Uac
 metadata:
   name: rhte-uac
 spec:
-  webHookUrl: "http://uac.uac.svc.cluster.local"
   namespace: uac
+  webHookUrl: "http://uac.uac.svc.cluster.local"
+  adHost: "34.73.167.129"
+  adPort: 389
+  adBaseDn: "dc=ad,dc=lab"
+  adBinduser: "admin"
+  adBindpass: "!23qweasd"
+  adGropu2ns: "__([-_\\w\\d]*)"

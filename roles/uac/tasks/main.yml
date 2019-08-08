@@ -1,11 +1,5 @@
 - name: Generate WebHook certificates
   include_tasks: certs.yml
 
-- debug: var=fact_ca
-- debug: var=fact_cert
-- debug: var=fact_key
-
-#- name: Deploy Service
-#  k8s:
-#    state: present
-#    definition: "{{ lookup('template', 'templates/service.yml') }}"
+- name: Install UAC
+  include_tasks: install.yml

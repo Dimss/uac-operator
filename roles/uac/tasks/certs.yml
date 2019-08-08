@@ -1,5 +1,5 @@
 - name: Generate CA, server.crt and server.key
-  script: files/create-certs.sh create {{certs_dir}} {{service_name}}
+  script: files/create-certs.sh create {{certs_dir}} {{webhook_name}}.{{namespace}}.svc.cluster.local
 
 - name: Get CA
   script: files/create-certs.sh pca {{certs_dir}}

@@ -1,3 +1,5 @@
 ---
+webhook_name: uac-webhook
+service_port: 8080
 certs_dir: /tmp/webhook_certs
-service_name: uac.uac.svc.cluster.local
+certs_mount_point: /uac/certs
