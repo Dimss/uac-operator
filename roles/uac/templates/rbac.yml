@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "{{webhook_name}}"
+  namespace: "{{namespace}}"
+---
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: "{{webhook_name}}"
+roleRef:
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: "{{webhook_name}}"
+  namespace: "{{namespace}}"

@@ -3,11 +3,11 @@ kind: Uac
 metadata:
   name: rhte-uac
 spec:
-  namespace: uac
-  webHookUrl: "http://uac.uac.svc.cluster.local"
+  image: "docker.io/dimssss/uac:v0.10"
+  namespace: "uac"
   adHost: "34.73.167.129"
   adPort: 389
   adBaseDn: "dc=ad,dc=lab"
   adBinduser: "admin"
   adBindpass: "!23qweasd"
-  adGropu2ns: "__([-_\\w\\d]*)"
+  adGropuTns: '__([-_\\w\\d]*)'

@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{webhook_name}}"
+  namespace: "{{namespace}}"
+  labels:
+    app: "{{webhook_name}}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{webhook_name}}"
+  template:
+    metadata:
+      labels:
+        app: "{{webhook_name}}"
+    spec:
+      serviceAccountName: "{{webhook_name}}"
+      containers:
+      - name: "{{webhook_name}}"
+        image: "{{image}}"
+        env:
+        - name: UAC_HTTP_CRT
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: http_crt
+        - name: UAC_HTTP_KEY
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: http_key
+        - name: UAC_AD_HOST
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: ad_host
+        - name: UAC_AD_PORT
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: ad_port
+        - name: UAC_AD_BASEDN
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: ad_basedn
+        - name: UAC_AD_BINDUSER
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: ad_binduser
+        - name: UAC_AD_BINDPASS
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: ad_bindpass
+        - name: UAC_AD_GROUP2NS
+          valueFrom:
+            secretKeyRef:
+              name: uaconfig
+              key: ad_group2ns
+        volumeMounts:
+        - name: certs-volume
+          mountPath: /uac/certs
+          readOnly: true
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+      volumes:
+      - name: certs-volume
+        secret:
+          secretName: uacerts

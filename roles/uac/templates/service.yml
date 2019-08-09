@@ -8,4 +8,4 @@ spec:
     app: "{{webhook_name}}"
   ports:
   - name: http
-    port: "{{service_port}}"
+    port: {{service_port}}

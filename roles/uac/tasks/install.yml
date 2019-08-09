@@ -5,10 +5,25 @@
 
 - name: Deploy Deynamic Admission Controller WebHook
   k8s:
-    state: present
+    state: "{{state}}"
     definition: "{{ lookup('template', 'templates/webhook.yml') }}"
 
 - name: Create Secrets
   k8s:
-    state: present
+    state: "{{state}}"
     definition: "{{ lookup('template', 'templates/secrets.yml') }}"
+
+- name: Create RBAC
+  k8s:
+    state: "{{state}}"
+    definition: "{{ lookup('template', 'templates/rbac.yml') }}"
+
+- name: Create deployment
+  k8s:
+    state: "{{state}}"
+    definition: "{{ lookup('template', 'templates/deployment.yml') }}"
+
+- name: Create service
+  k8s:
+    state: "{{state}}"
+    definition: "{{ lookup('template', 'templates/service.yml') }}"

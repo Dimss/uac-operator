@@ -17,4 +17,4 @@ python_version = "3.7"
 
 [scripts]
 op  = "operator-sdk up local --namespace=uac --watches-file=watches-dev.yaml"
-# pipenv run ansible-playbook uac.yml --extra-vars='{"namespace": "uac", "web_hook_url": "http://uac.uac.svc.cluster.local", "ad_host": "34.73.167.129", "ad_port": 389, "ad_base_dn": "dc=ad,dc=lab", "ad_binduser": "admin", "ad_bindpass": "!23qweasd", "ad_gropu2ns": "asd"}'
+# pipenv run ansible-playbook uac.yml --extra-vars='{"image": "docker.io/dimssss/uac:v0.10", "namespace": "uac", "web_hook_url": "http://uac.uac.svc.cluster.local", "ad_host": "34.73.167.129", "ad_port": 389, "ad_base_dn": "dc=ad,dc=lab", "ad_binduser": "admin", "ad_bindpass": "!23qweasd", "ad_gropu2ns": "__([-_\\w\\d]*)"}'
