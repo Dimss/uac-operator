@@ -1,26 +1,68 @@
-- name: Generate CA, server.crt and server.key
-  script: files/create-certs.sh create {{certs_dir}} {{webhook_name}}.{{namespace}}.svc.cluster.local
+- name: Check if certificates are already deployed
+  block:
+    - name: Get Validation WebHook Configuration
+      k8s_facts:
+        api_version: admissionregistration.k8s.io/v1beta1
+        kind: ValidatingWebhookConfiguration
+        namespace: "{{namespace}}"
+        name: "{{webhook_name}}"
+      register: webhook
 
-- name: Get CA
-  script: files/create-certs.sh pca {{certs_dir}}
-  register:  ca_output
+- name: Setup SSL Certificates
+  block:
+    - name: Generate CA, server.crt and server.key
+      script: files/create-certs.sh create {{certs_dir}} {{webhook_name}}.{{namespace}}.svc.cluster.local
 
-- name: Get Server crt
-  script: files/create-certs.sh pscert {{certs_dir}}
-  register:  crt_output
+    - name: Get CA
+      script: files/create-certs.sh pca {{certs_dir}}
+      register:  ca_output
 
-- name: Get Server key
-  script: files/create-certs.sh pskey {{certs_dir}}
-  register:  key_output
+    - name: Get Server crt
+      script: files/create-certs.sh pscert {{certs_dir}}
+      register:  crt_output
 
-- name: Set CA fact
-  set_fact:
-    fact_ca: "{{ ca_output.stdout_lines|first }}"
+    - name: Get Server key
+      script: files/create-certs.sh pskey {{certs_dir}}
+      register:  key_output
 
-- name: Set CERT fact
-  set_fact:
-    fact_cert: "{{crt_output.stdout_lines|first}}"
+    - name: Set CA fact
+      set_fact:
+        fact_ca: "{{ ca_output.stdout_lines|first }}"
 
-- name: Set KEY fact
-  set_fact:
-    fact_key: "{{key_output.stdout_lines|first}}"
+    - name: Set CERT fact
+      set_fact:
+        fact_cert: "{{crt_output.stdout_lines|first}}"
+
+    - name: Set KEY fact
+      set_fact:
+        fact_key: "{{key_output.stdout_lines|first}}"
+  when:
+    - webhook.resources | length < 1
+
+- name: Register existing certificates
+  block:
+    - name: Get certificates secret
+      k8s_facts:
+        api_version: v1
+        kind: Secret
+        namespace: "{{namespace}}"
+        name: "{{certs_secret}}"
+      register: certs
+
+    - fail:
+        msg: "Unable to find '{{certs_secret}}' secret"
+      when: certs.resources | length < 1
+
+    - name: Set CA fact
+      set_fact:
+        fact_ca: "{{ webhook.resources[0].webhooks[0].clientConfig.caBundle }}"
+
+    - name: Set CERT fact
+      set_fact:
+        fact_cert: "{{certs.resources[0].data['server.crt']}}"
+
+    - name: Set KEY fact
+      set_fact:
+        fact_key: "{{certs.resources[0].data['server.key']}}"
+  when:
+    - webhook.resources | length > 0

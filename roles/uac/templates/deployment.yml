@@ -23,46 +23,46 @@ spec:
         - name: UAC_HTTP_CRT
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: http_crt
         - name: UAC_HTTP_KEY
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: http_key
         - name: UAC_AD_HOST
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: ad_host
         - name: UAC_AD_PORT
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: ad_port
         - name: UAC_AD_BASEDN
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: ad_basedn
         - name: UAC_AD_BINDUSER
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: ad_binduser
         - name: UAC_AD_BINDPASS
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: ad_bindpass
         - name: UAC_AD_GROUP2NS
           valueFrom:
             secretKeyRef:
-              name: uaconfig
+              name: "{{config_secret}}"
               key: ad_group2ns
         volumeMounts:
         - name: certs-volume
-          mountPath: /uac/certs
+          mountPath: "{{certs_mount_point}}"
           readOnly: true
         ports:
         - containerPort: 8080
@@ -76,4 +76,4 @@ spec:
       volumes:
       - name: certs-volume
         secret:
-          secretName: uacerts
+          secretName: "{{certs_secret}}"

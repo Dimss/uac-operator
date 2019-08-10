@@ -4,3 +4,5 @@ webhook_name: uac-webhook
 service_port: 8080
 certs_dir: /tmp/webhook_certs
 certs_mount_point: /uac/certs
+certs_secret: uacerts
+config_secret: uaconfig
